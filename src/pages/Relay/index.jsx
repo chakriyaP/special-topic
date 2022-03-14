@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Switch } from "antd";
-import { Row, Col } from "antd";
+import { Row, Col, Divider } from "antd";
 import { Card } from "antd";
 import { BulbOutlined, BulbFilled } from "@ant-design/icons";
 
@@ -53,12 +53,15 @@ const Relay = (props) => {
 };
 const Index = () => {
   return (
-    <Row gutter={24}>
-      <Relay name="รีเลย์1" />
-      <Relay name="รีเลย์2" />
-      <Relay name="รีเลย์3" />
-      <Relay name="รีเลย์4" />
-    </Row>
+    <div>
+      <Divider orientation="left">จัดการรีเลย์</Divider>
+      <Row gutter={24}>
+        <Relay name="รีเลย์1" />
+        <Relay name="รีเลย์2" />
+        <Relay name="รีเลย์3" />
+        <Relay name="รีเลย์4" />
+      </Row>
+    </div>
   );
 };
 
