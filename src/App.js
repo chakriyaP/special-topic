@@ -23,6 +23,10 @@ import Setting from '../src/pages/Setting'
 import logo from "../src/assets/images/logo.png"
 import SettingSystem from "../src/pages/SettingSystem"
 
+import SetTemperature from "../src/pages/SetTemperature"
+import SetTime from "../src/pages/SetTime"
+
+
 const { Header, Content, Footer, Sider, } = Layout;
 const { SubMenu } = Menu;
 
@@ -85,6 +89,10 @@ function App() {
                 <Route path="/relay/temperature" element={<Temperature />} />
                 <Route path="/setting" element={<Setting />} />
                 <Route path="/setting/system" element={<SettingSystem />} />
+
+                <Route path="/relay/SetTemperature" element={<SetTemperature />} />
+                <Route path="/relay/SetTime" element={<SetTime />} />
+
               </Routes>
             </div>
           </Content>

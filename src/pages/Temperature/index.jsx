@@ -1,6 +1,10 @@
 import React from "react";
-import { Divider } from "antd";
-import { Table} from "antd";
+import { Table, Typography, Button, Row, Col } from "antd";
+import { Link } from "react-router-dom";
+
+
+
+const { Title } = Typography;
 
 const columns = [
   {
@@ -64,13 +68,26 @@ const data = [
 const index = () => {
   return (
     <div>
-      <Divider orientation="left">ตั้งค่าอุณหภูมิ</Divider>
-      <Table
-        columns={columns}
-        dataSource={data}
-        size="large"
-        pagination={{ pageSize: 5 }}
-      />
+      <Title>ตั้งค่าอุณหภูมิ</Title>
+
+      <Row gutter={[16, 8]} justify={'end'}>
+        <Col >
+          <Button>
+            <Link to="/relay/SetTemperature">
+              เพิ่มการตั้งค่าอุณหภูมิ
+            </Link>
+          </Button>
+        </Col>
+
+        <Col span={24}>
+          <Table
+            columns={columns}
+            dataSource={data}
+            size="large"
+            pagination={{ pageSize: 5 }}
+          />
+        </Col>
+      </Row>
     </div>
   );
 };

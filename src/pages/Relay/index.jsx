@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Switch } from "antd";
-import { Row, Col, Divider } from "antd";
+import { Row, Col, Divider, Typography } from "antd";
 import { Card } from "antd";
 import { BulbOutlined, BulbFilled } from "@ant-design/icons";
-
+const { Title } = Typography;
 const Relay = (props) => {
   const [toggle, setToggle] = useState(false);
 
@@ -54,7 +54,7 @@ const Relay = (props) => {
 const Index = () => {
   return (
     <div>
-      <Divider orientation="left">จัดการรีเลย์</Divider>
+      <Title>จัดการรีเลย์</Title>
       <Row gutter={24}>
         <Relay name="รีเลย์1" />
         <Relay name="รีเลย์2" />
