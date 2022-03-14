@@ -9,16 +9,10 @@ import {
 
 import { Layout, Menu, Row, Image } from 'antd';
 import {
-  DesktopOutlined,
   PieChartOutlined,
-  FileOutlined,
-  TeamOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined
+  SettingOutlined,
+  DotChartOutlined,
 } from '@ant-design/icons';
-
-
 
 
 import Dashboard from "../src/pages/Dashboard"
@@ -27,8 +21,7 @@ import Temperature from '../src/pages/Temperature'
 import Time from '../src/pages/Time'
 import Setting from '../src/pages/Setting'
 import logo from "../src/assets/images/logo.png"
-
-
+import SettingSystem from "../src/pages/SettingSystem"
 
 const { Header, Content, Footer, Sider, } = Layout;
 const { SubMenu } = Menu;
@@ -54,7 +47,7 @@ function App() {
                 แดชบอร์ด
               </Link>
             </Menu.Item>
-            <SubMenu key="sub1" icon={<UserOutlined />} title="จัดการรีเลย์">
+            <SubMenu key="sub2" icon={<DotChartOutlined />} title="จัดการรีเลย์">
               <Menu.Item key="3">
                 <Link to="/relay">
                   รีเลย์
@@ -68,11 +61,17 @@ function App() {
               </Link></Menu.Item>
             </SubMenu>
 
-            <Menu.Item key="9" icon={<FileOutlined />}>
-              <Link to="/setting">
-                ตั้งค่า
+            <SubMenu key="sub3" icon={<SettingOutlined />} title="ตั้งค่า">
+              <Menu.Item key="10"> <Link to="/setting/system">
+                ตั้งค่าระบบ
               </Link>
-            </Menu.Item>
+              </Menu.Item>
+              <Menu.Item key="9">
+                <Link to="/setting">
+                  ตั้งค่า Wifi
+                </Link>
+              </Menu.Item>
+            </SubMenu>
           </Menu>
         </Sider>
         <Layout className="site-layout">
@@ -85,6 +84,7 @@ function App() {
                 <Route path="/relay/time" element={<Time />} />
                 <Route path="/relay/temperature" element={<Temperature />} />
                 <Route path="/setting" element={<Setting />} />
+                <Route path="/setting/system" element={<SettingSystem />} />
               </Routes>
             </div>
           </Content>
