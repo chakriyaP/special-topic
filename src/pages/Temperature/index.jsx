@@ -19,6 +19,12 @@ const columns = [
     title: "รีเลย์",
     dataIndex: "relay",
   },
+  {
+    title: '',
+    dataIndex: '',
+    key: 'x',
+    render: () => <a>ลบ</a>,
+  },
 ];
 const data = [
   {

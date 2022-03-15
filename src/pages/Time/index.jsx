@@ -23,6 +23,12 @@ const columns = [
     title: "หมายเลขรีเลย์",
     dataIndex: "relyNum",
   },
+  {
+    title: '',
+    dataIndex: '',
+    key: 'x',
+    render: () => <a>ลบ</a>,
+  },
 ];
 const data = [
   {
