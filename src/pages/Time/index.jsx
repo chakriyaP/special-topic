@@ -1,10 +1,12 @@
-import React from "react";
-import { Table, Typography, Button, Row, Col } from "antd";
+import React, { useState, useEffect } from "react";
+import { Table, Typography, Button, Row, Col, Space } from "antd";
 import { Link } from "react-router-dom";
 
 
 const { Title } = Typography;
 
+const baseUrl = "https://asia-southeast1-kku-smart-farm.cloudfunctions.net/api"
+const boardId = "123"
 
 const columns = [
   {
@@ -17,56 +19,38 @@ const columns = [
   },
   {
     title: "ทำงาน (นาที)",
-    dataIndex: "work",
+    dataIndex: "executeTime",
   },
   {
     title: "หมายเลขรีเลย์",
-    dataIndex: "relyNum",
+    dataIndex: "relays",
   },
   {
-    title: '',
-    dataIndex: '',
-    key: 'x',
-    render: () => <a>ลบ</a>,
-  },
-];
-const data = [
-  {
-    key: "1",
-    date: "10/02/2565",
-    time: "10.00 PM",
-    work: "30 นาที",
-    relyNum: 1,
-
-  },
-  {
-    key: "2",
-    date: "11/02/2565",
-    time: "10.00 PM",
-    work: "50 นาที",
-    relyNum: 3,
-
-  },
-  {
-    key: "3",
-    date: "11/02/2565",
-    time: "09.00 PM",
-    work: "2 ชั่วโมง 40 นาที",
-    relyNum: 3,
-
-  },
-  {
-    key: "4",
-    date: "11/02/2565",
-    time: "12.00 AM",
-    work: "10 นาที",
-    relyNum: 3,
-
+    title: 'ลบการตั้งค่า',
+    key: 'delete',
+    render: (text, record) => (
+      <Space size="middle">
+        <a>ลบ</a>
+      </Space>
+    ),
   },
 
 ];
 
-const index = () => {
+
+const Index = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(async () => {
+    await fetch(`${baseUrl}/settings?boardId=${boardId}&type=time`, {
+    }).then(res => {
+      res.json().then(data => {
+        setData(data)
+        console.log(data);
+      })
+    })
+  },[])
+
   return (
     <div>
       <Title>ตั้งค่าเวลา</Title>
@@ -92,4 +76,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
