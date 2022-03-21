@@ -1,10 +1,31 @@
-import React from 'react'
+import React, { useState } from "react";
 import { Typography, Form, Input, Button, Card } from 'antd';
 
 
 const { Title } = Typography;
 
-const index = () => {
+const baseUrl = "https://asia-southeast1-kku-smart-farm.cloudfunctions.net/api"
+
+
+
+const Index = () => {
+    const [boardName, setฺBoardName] = useState("")
+    const [plantType, setPlantType] = useState("")
+    const [boardId, setBoardId] = useState("")
+    const datas = { boardId: boardId, boardName: boardName, plantType: plantType }
+    const handleSubmit = async (e) => {
+
+        await fetch(`${baseUrl}/boards`, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datas),
+
+        })
+
+    }
     return (
         <div>
             <Title>ตั้งค่าระบบ</Title>
@@ -15,15 +36,29 @@ const index = () => {
                     <Form.Item
                         label="ชนิดของพืช"
                     >
-                        <Input placeholder="ชนิดของพืช" />
+                        <Input placeholder="ชนิดของพืช"
+                            onChange={(e) => {
+                                setPlantType(e.target.value);
+                            }} />
                     </Form.Item>
                     <Form.Item
                         label="หมายเลขบอร์ด"
                     >
-                        <Input placeholder="หมายเลขที่อ่านได้จากอุปกรณ์" />
+                        <Input placeholder="หมายเลขที่อ่านได้จากอุปกรณ์"
+                            onChange={(e) => {
+                                setBoardId(e.target.value);
+                            }} />
+                    </Form.Item>
+                    <Form.Item
+                        label="ชื่อบอร์ด"
+                    >
+                        <Input placeholder="ชื่อของอุปกรณ์"
+                            onChange={(e) => {
+                                setฺBoardName(e.target.value);
+                            }} />
                     </Form.Item>
                     <Form.Item>
-                        <Button type="primary">บันทึก</Button>
+                        <Button type="primary" onClick={handleSubmit}>บันทึก</Button>
                     </Form.Item>
                 </Form>
             </Card>
@@ -31,4 +66,4 @@ const index = () => {
     );
 }
 
-export default index
+export default Index

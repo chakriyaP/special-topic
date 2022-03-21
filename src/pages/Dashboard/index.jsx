@@ -1,15 +1,30 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
 import { Typography, Card, Col, Row } from 'antd';
 import {
     ExperimentOutlined,
     DotChartOutlined, CloudSyncOutlined, CoffeeOutlined
 } from '@ant-design/icons';
 
+const baseUrl = "https://asia-southeast1-kku-smart-farm.cloudfunctions.net/api"
+const boardId = "123"
+
 
 const { Title } = Typography;
 
-const index = () => {
-    // const
+const Index = () => {
+
+    const [datas, setDatas] = useState([]);
+
+    useEffect(async () => {
+        await fetch(`${baseUrl}/sensors?boardId=${boardId}`, {
+        })
+            .then(res => {
+                res.json().then(data => {
+                    setDatas(data)
+                })
+            })
+    }, [])
+
     return (
         <div>
             <Title>แดชบอร์ด</Title>
@@ -24,7 +39,7 @@ const index = () => {
                                 <ExperimentOutlined style={{ fontSize: '60px', color: '#08c' }} />
                             </Col> */}
                             <Col span={16} >
-                                <Title level={2} >27 °C</Title>
+                                <Title level={2} >88 °C</Title>
                             </Col>
 
                         </Row>
@@ -75,4 +90,4 @@ const index = () => {
         </div>
     )
 }
-export default index
+export default Index
