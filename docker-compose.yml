@@ -1,5 +1,9 @@
 version: "3.7"
 
+volumes:
+ firebase-node_modules:
+ firebase-lib:
+ 
 services:
   react:
     container_name: react
@@ -14,9 +18,17 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
   firebase:
-    container_name: firebase
-    build:
-      context: ./functions/kku-smart-farm/functions
-      dockerfile: Dockerfile
-    ports:
-      - 5001:5000
+   build: ./firebase/functions
+   image: firebase
+   container_name: firebase
+   ports:
+     - 4000:4000
+     - 5000:5000
+     - 5001:5001
+   volumes:
+     - ./firebase:/firebase
+     - firebase-lib:/firebase/functions/lib
+     - firebase-node_modules:/firebase/functions/node_modules
+   environment:
+     - FIREBASE_PROJECT
+     - FIREBASE_TOKEN
