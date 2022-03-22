@@ -1,71 +1,72 @@
-import React from "react";
-import { Table, Typography, Button, Row, Col } from "antd";
+import React, { useState, useEffect } from "react";
+import { Table, Typography, Button, Row, Col, Modal } from "antd";
 import { Link } from "react-router-dom";
 
-
-
 const { Title } = Typography;
+const baseUrl = "https://asia-southeast1-kku-smart-farm.cloudfunctions.net/api"
+const boardId = "123"
 
-const columns = [
-  {
-    title: "อุณหภูมิ (°C)",
-    dataIndex: "temperature",
-  },
-  {
-    title: "ทำงาน (นาที)",
-    dataIndex: "work",
-  },
-  {
-    title: "รีเลย์",
-    dataIndex: "relay",
-  },
-];
-const data = [
-  {
-    key: "1",
-    temperature: 35,
-    work: 10,
-    relay: 1,
-  },
-  {
-    key: "2",
-    temperature: 35,
-    work: 10,
-    relay: 1,
-  },
-  {
-    key: "3",
-    temperature: 35,
-    work: 10,
-    relay: 1,
-  },
-  {
-    key: "4",
-    temperature: 35,
-    work: 10,
-    relay: 1,
-  },
-  {
-    key: "5",
-    temperature: 35,
-    work: 10,
-    relay: 1,
-  },
-  {
-    key: "6",
-    temperature: 35,
-    work: 10,
-    relay: 1,
-  },
-  {
-    key: "7",
-    temperature: 35,
-    work: 10,
-    relay: 1,
-  },
-];
+const Index = (props) => {
+  const columns = [
+    {
+      title: "อุณหภูมิ (°C)",
+      dataIndex: "temperature",
+    },
+    {
+      title: "ทำงาน (นาที)",
+      dataIndex: "executeTime",
+    },
+    {
+      title: "รีเลย์",
+      dataIndex: "relays",
+    },
+    {
+      title: 'ลบการตั้งค่า',
+      key: 'delete',
+      render: () => {
+        return (
+          <>
+            <a onClick={onDelete}>ลบ</a>
+          </>
+        )
+      }
+    },
 
-const index = () => {
+  ];
+
+  const [datas, setDatas] = useState([]);
+  // console.log(data.id);
+
+  const onDelete = () => {
+    Modal.confirm({
+      title: "คุณยืนยันที่จะลบการตั้งค่าอุณหภูมิหรือไม่",
+      onOk: () => {
+        // onHandleDelete()
+      }
+    })
+  }
+
+  // const onHandleDelete = async (e) => {
+  //   await fetch(`${baseUrl}/settings?schedualId=${datas.id}&type=temperature`, {
+  //     method: 'DELETE',
+  //   })
+  //     .then(res => {
+  //       res.json().then(data => {
+  //         console.log(data);
+  //       })
+  //     })
+  // }
+
+  useEffect(async () => {
+    await fetch(`${baseUrl}/settings?boardId=${boardId}&type=temperature`, {
+    })
+      .then(res => {
+        res.json().then(data => {
+          setDatas(data)
+        })
+      })
+  }, [])
+
   return (
     <div>
       <Title>ตั้งค่าอุณหภูมิ</Title>
@@ -82,7 +83,7 @@ const index = () => {
         <Col span={24}>
           <Table
             columns={columns}
-            dataSource={data}
+            dataSource={datas}
             size="large"
             pagination={{ pageSize: 5 }}
           />
@@ -92,4 +93,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
