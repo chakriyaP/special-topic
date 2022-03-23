@@ -17,8 +17,9 @@ WORKDIR /firebase/functions
 COPY package*.json ./
 
 CMD npm install \
+  && npm install --save firebase-functions@latest \
   && firebase use ${FIREBASE_PROJECT} --token ${FIREBASE_TOKEN} \
   && gcloud auth activate-service-account --key-file application_default_credentials.json \
   && npm run emulators
 
-EXPOSE 4000 5000 5001
+EXPOSE 4000 5000 5001 8080

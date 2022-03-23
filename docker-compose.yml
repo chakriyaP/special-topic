@@ -25,6 +25,7 @@ services:
      - 4000:4000
      - 5000:5000
      - 5001:5001
+     - 8080:8080
    volumes:
      - ./firebase:/firebase
      - firebase-lib:/firebase/functions/lib
