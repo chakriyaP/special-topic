@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Typography, Form, Input, Button, Card, Checkbox } from 'antd';
 import { Link } from "react-router-dom";
-
-
+import axios from "axios";
 
 const { Title } = Typography;
 const baseUrl = "https://asia-southeast1-kku-smart-farm.cloudfunctions.net/api"
@@ -23,20 +22,9 @@ const Index = () => {
     const datas = { boardId: boardId, temperature: temperature, executeTime: executeTime, relays: relays }
 
     const handleSubmit = async (e) => {
-
-        await fetch(`${baseUrl}/settings/temperature`, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(datas),
-
-        })
+        const response = await axios.post(`${baseUrl}/settings/temperature`, datas)
 
     }
-
-
 
     return (
         <div>
@@ -66,14 +54,13 @@ const Index = () => {
                             options={options}
                             onChange={(checkedValues) => {
                                 setRelays(checkedValues);
-                                // console.log('checked = ', checkedValues);
                             }}
                         />
                     </Form.Item>
                     <Form.Item>
-                        {/* <Link to=""> */}
+                        <Link to="/relay/temperature">
                             <Button type="primary" onClick={handleSubmit} >บันทึก </Button>
-                        {/* </Link> */}
+                        </Link>
                     </Form.Item>
                 </Form>
             </Card>

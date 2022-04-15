@@ -12,19 +12,6 @@ const boardId = "123"
 const { Title } = Typography;
 
 const Index = () => {
-
-    const [datas, setDatas] = useState([]);
-
-    useEffect(async () => {
-        await fetch(`${baseUrl}/sensors?boardId=${boardId}`, {
-        })
-            .then(res => {
-                res.json().then(data => {
-                    setDatas(data)
-                })
-            })
-    }, [])
-
     return (
         <div>
             <Title>แดชบอร์ด</Title>

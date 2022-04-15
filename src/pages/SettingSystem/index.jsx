@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { Typography, Form, Input, Button, Card } from 'antd';
-
+import axios from "axios";
 
 const { Title } = Typography;
 
 const baseUrl = "https://asia-southeast1-kku-smart-farm.cloudfunctions.net/api"
-
-
 
 const Index = () => {
     const [boardName, setฺBoardName] = useState("")
@@ -14,17 +12,7 @@ const Index = () => {
     const [boardId, setBoardId] = useState("")
     const datas = { boardId: boardId, boardName: boardName, plantType: plantType }
     const handleSubmit = async (e) => {
-
-        await fetch(`${baseUrl}/boards`, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(datas),
-
-        })
-
+        const response = await axios.post(`${baseUrl}/boards`, datas)
     }
     return (
         <div>

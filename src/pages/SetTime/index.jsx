@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Typography, Form, Input, Button, Card, Checkbox, DatePicker, TimePicker } from 'antd';
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 
 
@@ -23,17 +24,7 @@ const Index = () => {
 
     const datas = { boardId: boardId, time: time, date: date, executeTime: executeTime, relays: relays }
     const handleSubmit = async (e) => {
-
-        await fetch(`${baseUrl}/settings/time`, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(datas),
-
-        })
-
+        const response = await axios.post(`${baseUrl}/settings/time`, datas)
     }
 
     return (
@@ -46,7 +37,6 @@ const Index = () => {
                     >
                         <DatePicker onChange={(date, dateString) => {
                             setDate(dateString);
-                            // console.log(dateString);
                         }} />
                     </Form.Item>
 
@@ -55,7 +45,6 @@ const Index = () => {
                     >
                         <TimePicker format={format} onChange={(time, timeString) => {
                             setTime(timeString);
-                            // console.log(timeString);
                         }} />
                     </Form.Item>
                     <Form.Item
@@ -72,12 +61,13 @@ const Index = () => {
                             options={options}
                             onChange={(checkedValues) => {
                                 setRelays(checkedValues);
-                                // console.log('checked = ', checkedValues);
                             }}
                         />
                     </Form.Item>
                     <Form.Item>
-                        <Button type="primary" onClick={handleSubmit}>บันทึก</Button>
+                        <Link to="/relay/time">
+                            <Button type="primary" onClick={handleSubmit}>บันทึก</Button>
+                        </Link >
                     </Form.Item>
                 </Form>
             </Card>

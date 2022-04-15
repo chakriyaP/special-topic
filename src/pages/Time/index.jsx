@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table, Typography, Button, Row, Col, Space } from "antd";
 import { Link } from "react-router-dom";
-
+import axios from "axios";
 
 const { Title } = Typography;
 
@@ -12,6 +12,7 @@ const columns = [
   {
     title: "วัน",
     dataIndex: "date",
+
   },
   {
     title: "เวลา",
@@ -27,29 +28,20 @@ const columns = [
   },
   {
     title: 'ลบการตั้งค่า',
-    key: 'delete',
-    render: (text, record) => (
-      <Space size="middle">
-        <a>ลบ</a>
-      </Space>
-    ),
   },
 
 ];
 
 
 const Index = () => {
-  const [data, setData] = useState([]);
+  const [data, setDatas] = useState([]);
 
   useEffect(async () => {
-    await fetch(`${baseUrl}/settings?boardId=${boardId}&type=time`, {
-    }).then(res => {
-      res.json().then(data => {
-        setData(data)
-        console.log(data);
+    const response = await axios.get(`${baseUrl}/settings?boardId=${boardId}&type=time`)
+      .then((response) => {
+        setDatas(response.data)
       })
-    })
-  },[])
+  }, [])
 
   return (
     <div>
@@ -66,6 +58,7 @@ const Index = () => {
         <Col span={24}>
           <Table
             columns={columns}
+            rowKey={obj => obj.id}
             dataSource={data}
             size="large"
             pagination={{ pageSize: 5 }}
