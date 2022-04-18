@@ -15,10 +15,10 @@ import Swal from "sweetalert2";
 
 const Index = () => {
   const options = [
-    { label: "panda", value: "panda" },
-    { label: "puppy", value: "puppy" },
-    { label: "kitten", value: "kitten" },
-    { label: "bunny", value: "bunny" },
+    { label: 'panda', value: 'panda' },
+    { label: 'puppy', value: 'puppy' },
+    { label: 'kitten', value: 'kitten' },
+    { label: 'bunny', value: 'bunny' },
   ];
 
   const [data, setData] = React.useState({ boardId: boardId });

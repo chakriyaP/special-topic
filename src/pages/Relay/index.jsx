@@ -6,12 +6,15 @@ import axios from "axios";
 import { BulbOutlined, BulbFilled } from "@ant-design/icons";
 import { dockerUrl, boardId } from "../../util/helper";
 const { Title } = Typography;
+
 const Relay = (props) => {
   const [toggle, setToggle] = useState(props.toggleDefault);
 
   function onChange(checked) {
     setToggle(checked);
+    props.onSelect(checked);
   }
+
   return (
     <div>
       <Col className="gutter-row" span={4}>
@@ -22,7 +25,7 @@ const Relay = (props) => {
                 {props.status === "auto" ? (
                   <Switch
                     defaultChecked={toggle}
-                    onChange={props.onSelect}
+
                     disabled
                   />
                 ) : (
@@ -54,13 +57,15 @@ const Relay = (props) => {
 };
 const Index = () => {
   const [data, setData] = React.useState();
-  const [status, setStatus] = React.useState("manual");
+  const [status, setStatus] = React.useState("auto");
   const [relays, setRelays] = React.useState({});
+  const [loading, setLoading] = React.useState(false);
 
   const getRelaysStorage = React.useCallback(async () => {
     const res = await axios.get(`${dockerUrl}/relays?boardId=${boardId}`);
     setData(res.data);
-    setStatus(res.data.status);
+    setStatus(res.data["status"]);
+    setRelays(res.data["relays"])
   }, []);
 
   React.useEffect(() => {
@@ -68,19 +73,36 @@ const Index = () => {
   }, [getRelaysStorage]);
 
   React.useEffect(() => {
-    console.log(relays);
-  }, [relays]);
+    onUpdateRelay()
 
-  const optionsWithDisabled = [
+  }, [relays, status]);
+
+  const onUpdateRelay = async () => {
+    const data = {
+      boardId: boardId,
+      status: status,
+      relays: { ...relays }
+
+    }
+    if (status === "auto") delete data?.relays
+
+
+
+    await axios.patch(
+      `${dockerUrl}/relays`, {
+      ...data
+    });
+  }
+
+  const options = [
     { label: "Manual", value: "manual" },
     { label: "Auto", value: "auto" },
   ];
 
-  const onSelect = (e, item) => {
-    console.log(e, item);
-  };
   const onChangeStatus = (e) => {
+
     setStatus(e.target.value);
+
   };
 
   return (
@@ -90,12 +112,11 @@ const Index = () => {
           <Row justify="space-between" align="middle">
             <Title>จัดการรีเลย์</Title>
             <Radio.Group
-              options={optionsWithDisabled}
+              options={options}
               onChange={onChangeStatus}
               value={status}
               optionType="button"
               buttonStyle="solid"
-              defaultValue={status}
             />
           </Row>
         </Col>
@@ -113,7 +134,9 @@ const Index = () => {
                 )}
                 toggleDefault={data["relays"][item] === "on" ? true : false}
                 onSelect={(e) => {
-                  onSelect(item, e);
+                  setRelays({ ...relays, [item]: e ? "on" : "off" });
+                  onUpdateRelay();
+
                 }}
               />
             );
