@@ -2,15 +2,13 @@ import React, { useState } from "react";
 import {
   Typography,
   Form,
-  Input,
   Button,
   Card,
   Checkbox,
   DatePicker,
-  TimePicker,
+  Space,
 } from "antd";
-import moment from "moment";
-import { Link } from "react-router-dom";
+
 import axios from "axios";
 import { dockerUrl, boardId } from "../../util/helper";
 import Swal from "sweetalert2";
@@ -24,7 +22,7 @@ const Index = () => {
   ];
 
   const [data, setData] = React.useState({ boardId: boardId });
-
+  const { RangePicker } = DatePicker;
   // const datas = { boardId: boardId, time: time, date: date, executeTime: executeTime, relays: relays }
   const handleSubmit = async (e) => {
     await axios.post(`${dockerUrl}/settings/time`, data);
@@ -40,44 +38,27 @@ const Index = () => {
     console.log("data", data);
   }, [data]);
 
-  const dateSelected = (date) => {
-    const dateData = date.format("DD/MM/YYYY");
-    const arrayDate = dateData.split("/");
-    arrayDate[2] = parseInt(arrayDate[2]) + 543;
-    const newDate = arrayDate.join("/");
-    setData({ ...data, date: newDate });
+  const onChange = (time) => {
+    const startTime = +time[0];
+    const endTime = +time[1];
+    setData({ ...data, startTime, endTime });
   };
 
-  const timeSelected = (time) => {
-    const timeData = time.format("HH:mm");
-    setData({ ...data, time: timeData });
-  };
-
-  const executeTimeSelected = (e) => {
-    const excuteTime = parseInt(e.target.value);
-    setData({ ...data, executeTime: excuteTime });
-  };
   return (
     <div>
       <Typography.Title>เพิ่มการตั้งค่าเวลา</Typography.Title>
       <Card title="เพิ่มการตั้งค่าเวลา" bordered={false}>
         <Form layout="vertical" onFinish={handleSubmit}>
-          <Form.Item label="วัน">
-            <DatePicker onChange={dateSelected} />
+          <Form.Item label="วันเริ่ม/สิ้นสุดของการทำงาน">
+            <Space direction="vertical" size={12}>
+              <RangePicker
+                showTime={{ format: "HH:mm" }}
+                format="YYYY-MM-DD HH:mm"
+                onChange={onChange}
+              />
+            </Space>
           </Form.Item>
 
-          <Form.Item label="เวลา">
-            <TimePicker onChange={timeSelected} />
-          </Form.Item>
-          <Form.Item label="ทำงาน (นาที)">
-            <Input
-              placeholder="ระยะเวลาในการทำงาน"
-              type={"number"}
-              defaultValue={0}
-              value={data.executeTime}
-              onChange={executeTimeSelected}
-            />
-          </Form.Item>
           <Form.Item label="รีเลย์">
             <Checkbox.Group
               options={options}
