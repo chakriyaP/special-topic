@@ -2,6 +2,14 @@ const express = require("express");
 const router = express.Router();
 const { db } = require("../util/admin");
 
+
+router.get("/", async(req, res) => {
+  const boards = await db.collection("boards").get()
+  const boardsData = boards.docs.map(doc => doc.data())
+  return res.json(boardsData)
+});
+
+
 // @route   POST board/
 // @desc    Create board
 // @body    { boardId: idBoard, boardName: string, plantType: string }
