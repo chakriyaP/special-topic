@@ -12,10 +12,8 @@ router.get("/", (req, res) => {
   const { boardId, type } = req.query;
   if (!boardId)
     return res.status(404).json({ error: "Parameter -- boardId -- not found" });
-  let schedualRef = db
-    .collection("schedules")
-    .where("boardId", "==", boardId)
-  if(type) schedualRef = schedualRef.where("type", "==", type)
+  let schedualRef = db.collection("schedules").where("boardId", "==", boardId);
+  if (type) schedualRef = schedualRef.where("type", "==", type);
 
   const query = schedualRef.get();
   query.then((snapshot) => {
@@ -78,8 +76,8 @@ router.post("/temperature", (req, res) => {
 // @respone 200 { message: "Schedule created successfully" }
 
 router.post("/time", (req, res) => {
-  const { boardId, date, time, executeTime, relays } = req.body;
-  const undefinedInput = validateInput({ boardId, date, time, executeTime, relays });
+  const { boardId, startTime, endTime, relays } = req.body;
+  const undefinedInput = validateInput({ boardId, startTime, endTime, relays });
   if (undefinedInput.length != 0)
     return res
       .status(404)
@@ -87,9 +85,8 @@ router.post("/time", (req, res) => {
   const schedualRef = db.collection("schedules");
   schedualRef.add({
     boardId,
-    executeTime,
-    date,
-    time,
+    startTime,
+    endTime,
     relays,
     type: "time",
     status: "pending",

@@ -31,7 +31,7 @@ router.get("/", (req, res) => {
 // @respone 200 { message: { updated sensors } }
 
 router.patch("/", (req, res) => {
-  const { boardId, sensors } = req.body;
+  const { boardId, sensors, time } = req.body;
   const sensorsRef = db.collection("sensors").doc(boardId);
   const updated = [];
   if (typeof sensors != "undefined") {

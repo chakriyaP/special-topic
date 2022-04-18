@@ -5,11 +5,21 @@ exports.migrating = async () => {
     const existedCollection = (await db.listCollections()).length;
     if (existedCollection === 0) {
       console.log("No collections found in Firestore. Creating...");
+      const now = new Date().getTime();
+      await db.collection("time").doc("unix").set({ currTime: now });
       db.collection("boards").doc("1.1.1.1").set({
         name: "board1",
         plantType: "plant1",
         date: new Date().toISOString(),
       });
+    }
+  }
+  if (process.env.FIRESTORE_EMULATOR_HOST.includes("0.0.0.0")) {
+    const existedCollection = (await db.listCollections()).length;
+    if (existedCollection === 0) {
+      console.log("No collections found in Firestore. Creating...");
+      const now = new Date().getTime();
+      await db.collection("time").doc("unix").set({ currTime: now });
     }
   }
 };
