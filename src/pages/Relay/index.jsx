@@ -1,21 +1,16 @@
 import React, { useState } from "react";
 import { Switch } from "antd";
-import { Row, Col, Divider, Typography } from "antd";
+import { Row, Col, Typography } from "antd";
 import { Card } from "antd";
+import axios from "axios";
 import { BulbOutlined, BulbFilled } from "@ant-design/icons";
+import { dockerUrl, boardId } from "../../util/helper";
+
 const { Title } = Typography;
 const Relay = (props) => {
-  const [toggle, setToggle] = useState(false);
-
-  const [on, setOn] = useState("ON");
-
+  const [toggle, setToggle] = useState(props.toggleDefault);
   function onChange(checked) {
-    setToggle(!checked);
-    if (toggle) {
-      setOn("ON");
-    } else {
-      setOn("OFF");
-    }
+    setToggle(checked);
   }
   return (
     <div>
@@ -24,26 +19,24 @@ const Relay = (props) => {
           <Card title={props.name} bordered={false} style={{ width: 250 }}>
             <Row justify="space-around" align="middle">
               <Col>
-                <Switch defaultChecked onChange={onChange} />
+                <Switch defaultChecked={toggle} onChange={onChange} />
               </Col>
             </Row>
             <Row justify="space-around" align="middle">
               <Col>
                 {toggle ? (
-                  <BulbOutlined
+                  <BulbFilled
                     style={{ fontSize: "70px", color: "#08c", margin: 20 }}
                   />
                 ) : (
-                  <BulbFilled
+                  <BulbOutlined
                     style={{ fontSize: "70px", color: "#08c", margin: 20 }}
                   />
                 )}
               </Col>
             </Row>
             <Row justify="space-around" align="middle">
-              <Col>
-                <b>{on}</b>
-              </Col>
+              <Col>{toggle ? "ON" : "OFF"}</Col>
             </Row>
           </Card>
         </div>
@@ -52,14 +45,33 @@ const Relay = (props) => {
   );
 };
 const Index = () => {
+  const [data, setData] = React.useState();
+
+  const getRelaysStorage = React.useCallback(async () => {
+    const res = await axios.get(`${dockerUrl}/relays?boardId=${boardId}`);
+
+    setData(res.data);
+  }, []);
+
+  React.useEffect(() => {
+    getRelaysStorage();
+  }, [getRelaysStorage]);
+
+  React.useEffect(() => {}, [data]);
   return (
     <div>
-      <Title>จัดการรีเลย์</Title>
       <Row gutter={24}>
-        <Relay name="รีเลย์1" />
-        <Relay name="รีเลย์2" />
-        <Relay name="รีเลย์3" />
-        <Relay name="รีเลย์4" />
+        <Col>
+          <Title>จัดการรีเลย์</Title>
+          <Switch />
+        </Col>
+      </Row>
+
+      <Row gutter={24}>
+        {data &&
+          Object.keys(data["relays"]).map((item, key) => {
+            return <Relay name={item} toggleDefault={data["relays"][key]} />;
+          })}
       </Row>
     </div>
   );
