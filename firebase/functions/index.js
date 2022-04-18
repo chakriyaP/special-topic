@@ -36,7 +36,7 @@ const executeChange = async (doc, now) => {
   const temperature = (await sensorsRef.get()).data().temperature;
   if (status === "auto") {
     if (scheduleData.type == "temperature") {
-      if (temperature < scheduleData.temperature) {
+      if (parseInt(temperature) < parseInt(scheduleData.temperature)) {
         let selectedRelays = scheduleData.relays;
         selectedRelays.forEach((e) => {
           relays[e] = "off";
