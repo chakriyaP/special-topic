@@ -69,11 +69,9 @@ const Index = () => {
             />
           </Form.Item>
           <Form.Item>
-            {/* <Link to="/relay/time"> */}
             <Button type="primary" htmlType="submit">
               บันทึก
             </Button>
-            {/* </Link > */}
           </Form.Item>
         </Form>
       </Card>
