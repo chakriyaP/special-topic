@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Switch } from "antd";
-import { Row, Col, Typography } from "antd";
+import { Row, Col, Typography, Radio } from "antd";
 import { Card } from "antd";
 import axios from "axios";
 import { BulbOutlined, BulbFilled } from "@ant-design/icons";
@@ -46,10 +46,10 @@ const Relay = (props) => {
 };
 const Index = () => {
   const [data, setData] = React.useState();
+  const [status, setStatus] = React.useState("manual");
 
   const getRelaysStorage = React.useCallback(async () => {
     const res = await axios.get(`${dockerUrl}/relays?boardId=${boardId}`);
-
     setData(res.data);
   }, []);
 
@@ -57,20 +57,39 @@ const Index = () => {
     getRelaysStorage();
   }, [getRelaysStorage]);
 
-  React.useEffect(() => {}, [data]);
+
+
+  const optionsWithDisabled = [
+    { label: 'Manual', value: 'manual' },
+    { label: 'Auto', value: 'auto' },
+  ];
+
+  const onChangeStatus = (e) => {
+    setStatus(e.target.value);
+  }
+
   return (
     <div>
       <Row gutter={24}>
-        <Col>
-          <Title>จัดการรีเลย์</Title>
-          <Switch />
+        <Col span={24}>
+          <Row justify="space-between" align="middle">
+            <Title>จัดการรีเลย์</Title>
+            <Radio.Group
+              options={optionsWithDisabled}
+              onChange={onChangeStatus}
+              value={status}
+              optionType="button"
+              buttonStyle="solid"
+            />
+          </Row>
         </Col>
+
       </Row>
 
-      <Row gutter={24}>
+      <Row gutter={[16, 24]}>
         {data &&
           Object.keys(data["relays"]).map((item, key) => {
-            return <Relay name={item} toggleDefault={data["relays"][key]} />;
+            return <Relay name={item.replace(item.charAt(0), item.charAt(0).toUpperCase())} toggleDefault={data["relays"][key]} />;
           })}
       </Row>
     </div>
