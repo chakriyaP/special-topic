@@ -23,10 +23,6 @@
       "enabled": true,
       "host": "0.0.0.0",
       "port": 4000
-    },
-    "pubsub": {
-      "host": "0.0.0.0",
-      "port": 8085
     }
   }
 }

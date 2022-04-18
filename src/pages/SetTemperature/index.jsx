@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { Typography, Form, Input, Button, Card, Checkbox } from 'antd';
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { dockerUrl, boardId } from "../../util/helper"
+import Swal from 'sweetalert2'
 
 const { Title } = Typography;
-const baseUrl = "https://asia-southeast1-kku-smart-farm.cloudfunctions.net/api"
-const boardId = "123"
+
 
 const Index = () => {
     const options = [
@@ -15,36 +16,44 @@ const Index = () => {
         { label: 'รีเลย์ 4', value: '4' },
 
     ];
-    const [temperature, setTemperature] = useState("")
-    const [executeTime, setExecuteTime] = useState("")
-    const [relays, setRelays] = useState("")
-
-    const datas = { boardId: boardId, temperature: temperature, executeTime: executeTime, relays: relays }
+    const [data, setData] = React.useState({ boardId: boardId })
 
     const handleSubmit = async (e) => {
-        const response = await axios.post(`${baseUrl}/settings/temperature`, datas)
-
+        await axios.post(`${dockerUrl}/settings/temperature`, data)
+        Swal.fire({
+            icon: 'success',
+            title: 'เพิ่มการตั้งค่าอุณหภูมิสำเร็จ',
+            showConfirmButton: false,
+            timer: 1500
+        })
+        setData({})
     }
 
     return (
         <div>
             <Title>เพิ่มการตั้งค่าอุณหภูมิ</Title>
             <Card title="เพิ่มการตั้งค่าอุณหภูมิ" bordered={false} >
-                <Form layout="vertical">
+                <Form layout="vertical"
+                    onFinish={handleSubmit}
+                >
                     <Form.Item
                         label="อุณหภูมิ (°C)"
                     >
                         <Input placeholder="อุณหภูมิ (°C)" type={'number'}
+                            value={data.temperature}
+
                             onChange={(e) => {
-                                setTemperature(e.target.value);
+                                setData({ ...data, temperature: e.target.value })
                             }} />
                     </Form.Item>
                     <Form.Item
                         label="ทำงาน (นาที)"
                     >
                         <Input placeholder="ระยะเวลาในการทำงาน" type={'number'}
+                            value={data.executeTime}
+
                             onChange={(e) => {
-                                setExecuteTime(e.target.value);
+                                setData({ ...data, executeTime: e.target.value })
                             }} />
                     </Form.Item>
                     <Form.Item
@@ -52,15 +61,17 @@ const Index = () => {
                     >
                         <Checkbox.Group
                             options={options}
+                            value={data.relays}
+                            selected={data.relays}
                             onChange={(checkedValues) => {
-                                setRelays(checkedValues);
+                                setData({ ...data, relays: checkedValues })
                             }}
                         />
                     </Form.Item>
                     <Form.Item>
-                        <Link to="/relay/temperature">
-                            <Button type="primary" onClick={handleSubmit} >บันทึก </Button>
-                        </Link>
+                        {/* <Link to="/relay/temperature"> */}
+                        <Button type="primary" htmlType="submit" >บันทึก </Button>
+                        {/* </Link> */}
                     </Form.Item>
                 </Form>
             </Card>

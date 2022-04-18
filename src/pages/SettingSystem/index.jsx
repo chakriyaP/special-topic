@@ -1,52 +1,64 @@
 import React, { useState } from "react";
 import { Typography, Form, Input, Button, Card } from 'antd';
 import axios from "axios";
+import { dockerUrl } from "../../util/helper"
+import Swal from 'sweetalert2'
 
 const { Title } = Typography;
 
-const baseUrl = "https://asia-southeast1-kku-smart-farm.cloudfunctions.net/api"
-
 const Index = () => {
-    const [boardName, setฺBoardName] = useState("")
-    const [plantType, setPlantType] = useState("")
-    const [boardId, setBoardId] = useState("")
-    const datas = { boardId: boardId, boardName: boardName, plantType: plantType }
+    const [data, setData] = React.useState({})
+
     const handleSubmit = async (e) => {
-        const response = await axios.post(`${baseUrl}/boards`, datas)
+        await axios.post(`${dockerUrl}/boards`, data)
+        Swal.fire({
+            icon: 'success',
+            title: 'บันทึกการตั้งค่าระบบสำเร็จ',
+            showConfirmButton: false,
+            timer: 1500
+        })
+        setData({})
     }
+
     return (
         <div>
             <Title>ตั้งค่าระบบ</Title>
             <Card title="ตั้งค่าระบบ" bordered={false}>
                 <Form
                     layout="vertical"
+                    onFinish={handleSubmit}
                 >
                     <Form.Item
                         label="ชนิดของพืช"
                     >
                         <Input placeholder="ชนิดของพืช"
+                            value={data.plantType}
                             onChange={(e) => {
-                                setPlantType(e.target.value);
+                                setData({ ...data, plantType: e.target.value })
+
                             }} />
                     </Form.Item>
                     <Form.Item
                         label="หมายเลขบอร์ด"
                     >
                         <Input placeholder="หมายเลขที่อ่านได้จากอุปกรณ์"
+                            value={data.boardId}
                             onChange={(e) => {
-                                setBoardId(e.target.value);
+
+                                setData({ ...data, boardId: e.target.value })
                             }} />
                     </Form.Item>
                     <Form.Item
                         label="ชื่อบอร์ด"
                     >
                         <Input placeholder="ชื่อของอุปกรณ์"
+                            value={data.boardName}
                             onChange={(e) => {
-                                setฺBoardName(e.target.value);
+                                setData({ ...data, boardName: e.target.value })
                             }} />
                     </Form.Item>
                     <Form.Item>
-                        <Button type="primary" onClick={handleSubmit}>บันทึก</Button>
+                        <Button type="primary" htmlType="submit" >บันทึก</Button>
                     </Form.Item>
                 </Form>
             </Card>

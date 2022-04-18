@@ -2,46 +2,54 @@ import React, { useState, useEffect } from "react";
 import { Table, Typography, Button, Row, Col, Space } from "antd";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { dockerUrl, boardId } from "../../util/helper"
+import { DeleteOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
 
-const baseUrl = "https://asia-southeast1-kku-smart-farm.cloudfunctions.net/api"
-const boardId = "123"
-
-const columns = [
-  {
-    title: "วัน",
-    dataIndex: "date",
-
-  },
-  {
-    title: "เวลา",
-    dataIndex: "time",
-  },
-  {
-    title: "ทำงาน (นาที)",
-    dataIndex: "executeTime",
-  },
-  {
-    title: "หมายเลขรีเลย์",
-    dataIndex: "relays",
-  },
-  {
-    title: 'ลบการตั้งค่า',
-  },
-
-];
-
-
 const Index = () => {
+  const columns = [
+    {
+      title: "วัน",
+      dataIndex: "date",
+
+    },
+    {
+      title: "เวลา",
+      dataIndex: "time",
+    },
+    {
+      title: "ทำงาน (นาที)",
+      dataIndex: "executeTime",
+    },
+    {
+      title: "หมายเลขรีเลย์",
+      dataIndex: "relays",
+    },
+    {
+      title: 'ลบการตั้งค่า',
+      dataIndex: "delete",
+      render: (_, record) => (
+        <DeleteOutlined onClick={deleteTime} />
+      ),
+    },
+
+  ];
   const [data, setDatas] = useState([]);
 
-  useEffect(async () => {
-    const response = await axios.get(`${baseUrl}/settings?boardId=${boardId}&type=time`)
-      .then((response) => {
-        setDatas(response.data)
-      })
+  React.useEffect(() => {
+    getAllTime()
   }, [])
+
+  const getAllTime = async () => {
+    const res = await axios.get(`${dockerUrl}/settings?boardId=${boardId}`)
+    setDatas(res.data)
+  }
+
+
+  const deleteTime = async () => {
+    //TO DO Fetch API DELETE
+  }
 
   return (
     <div>

@@ -26,6 +26,8 @@ import SettingSystem from "../src/pages/SettingSystem"
 import SetTemperature from "../src/pages/SetTemperature"
 import SetTime from "../src/pages/SetTime"
 
+import Test from "../src/pages/Test"
+
 
 const { Header, Content, Footer, Sider, } = Layout;
 const { SubMenu } = Menu;
@@ -76,6 +78,11 @@ function App() {
                 </Link>
               </Menu.Item>
             </SubMenu>
+            <Menu.Item key="1" icon={<PieChartOutlined />}>
+              <Link to="/test">
+                ทดสอบระบบ
+              </Link>
+            </Menu.Item>
           </Menu>
         </Sider>
         <Layout className="site-layout">
@@ -92,6 +99,8 @@ function App() {
 
                 <Route path="/relay/SetTemperature" element={<SetTemperature />} />
                 <Route path="/relay/SetTime" element={<SetTime />} />
+
+                <Route path="/test" element={<Test />} />
 
               </Routes>
             </div>

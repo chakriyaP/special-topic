@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Table, Typography, Button, Row, Col, Modal } from "antd";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { dockerUrl, boardId } from "../../util/helper"
+import { DeleteOutlined } from '@ant-design/icons';
+
 
 const { Title } = Typography;
-const baseUrl = "https://asia-southeast1-kku-smart-farm.cloudfunctions.net/api"
-const boardId = "123"
+
 
 const Index = (props) => {
   const columns = [
@@ -23,18 +25,27 @@ const Index = (props) => {
     },
     {
       title: 'ลบการตั้งค่า',
+      dataIndex: "delete",
+      render: (_, record) => (
+        <DeleteOutlined onClick={deleteTemperature} />
+      ),
     },
-
   ];
 
   const [datas, setDatas] = useState([]);
 
-  useEffect(async () => {
-    const response = await axios.get(`${baseUrl}/settings?boardId=${boardId}&type=temperature`)
-      .then((response) => {
-        setDatas(response.data)
-      })
+  React.useEffect(() => {
+    getTemperature()
   }, [])
+
+  const getTemperature = async () => {
+    const res = await axios.get(`${dockerUrl}/settings?boardId=${boardId}&type=temperature`)
+    setDatas(res.data)
+  }
+
+  const deleteTemperature = async () => {
+    //TO DO Fetch API DELETE
+  }
 
   return (
     <div>
@@ -53,9 +64,9 @@ const Index = (props) => {
           <Table
             columns={columns}
             dataSource={datas}
-            rowKey={obj => obj.id}
+            rowKey={datas => datas.id}
             size="large"
-            pagination={{ pageSize: 5 }}
+            pagination={{ pageSize: 10 }}
           />
         </Col>
       </Row>
