@@ -94,7 +94,7 @@ exports.onTimeChange = functions
   .region("asia-southeast1")
   .firestore.document("time/unix")
   .onUpdate(async (timeDoc, content) => {
-    const now = timeDoc.data().currTime;
+    const now = timeDoc.after.data().currTime;
     const schedualRef = db.collection("schedules");
     schedualRef.get().then(async (snapshot) => {
       for (const doc of snapshot.docs) {
