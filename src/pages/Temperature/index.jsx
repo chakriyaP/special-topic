@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { dockerUrl, boardId } from "../../util/helper"
 import { DeleteOutlined } from '@ant-design/icons';
+import Swal from 'sweetalert2'
+
 
 
 const { Title } = Typography;
@@ -27,7 +29,7 @@ const Index = (props) => {
       title: 'ลบการตั้งค่า',
       dataIndex: "delete",
       render: (_, record) => (
-        <DeleteOutlined onClick={deleteTemperature} />
+        <DeleteOutlined onClick={(e) => deleteTemperature(record.id)} />
       ),
     },
   ];
@@ -43,8 +45,17 @@ const Index = (props) => {
     setDatas(res.data)
   }
 
-  const deleteTemperature = async () => {
+  const deleteTemperature = async (id) => {
     //TO DO Fetch API DELETE
+    await axios.delete(`${dockerUrl}/settings?schedualId=${id}`)
+    Swal.fire({
+      icon: 'success',
+      title: 'ลบการตั้งค่าอุณหภูมิเรียบร้อย',
+      showConfirmButton: false,
+      timer: 1500
+    })
+    getTemperature()
+
   }
 
   return (
