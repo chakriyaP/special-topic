@@ -28,7 +28,6 @@ import SetTime from "../src/pages/SetTime"
 
 import Test from "../src/pages/Test"
 
-
 const { Header, Content, Footer, Sider, } = Layout;
 const { SubMenu } = Menu;
 
@@ -39,7 +38,6 @@ function App() {
     <Router>
       <Layout style={{ minHeight: '100vh' }}>
         <Sider collapsible collapsed={collapsed} onCollapse={() => { setCollapsed(!collapsed) }}>
-
           <Row justify="center" align="center">
             <Image
               width={100}
@@ -49,7 +47,7 @@ function App() {
           <div className="logo"> </div>
           <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
             <Menu.Item key="1" icon={<PieChartOutlined />}>
-              <Link to="/dashboard">
+              <Link to="/">
                 แดชบอร์ด
               </Link>
             </Menu.Item>
@@ -78,7 +76,7 @@ function App() {
                 </Link>
               </Menu.Item>
             </SubMenu>
-            <Menu.Item key="1" icon={<PieChartOutlined />}>
+            <Menu.Item key="11" icon={<PieChartOutlined />}>
               <Link to="/test">
                 ทดสอบระบบ
               </Link>
@@ -90,7 +88,7 @@ function App() {
           <Content style={{ margin: '0 16px' }}>
             <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
               <Routes>
-                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/" element={<Dashboard />} />
                 <Route path="/relay" element={<Relay />} />
                 <Route path="/relay/time" element={<Time />} />
                 <Route path="/relay/temperature" element={<Temperature />} />
@@ -108,8 +106,7 @@ function App() {
           <Footer style={{ textAlign: 'center' }}>KKU Smart Farm ©2022 Created by La ok Mai Nueai Chang</Footer>
         </Layout>
       </Layout>
-    </Router>
-  );
+    </Router>)
 }
 
 
