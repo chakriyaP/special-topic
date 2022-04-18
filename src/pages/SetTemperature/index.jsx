@@ -10,10 +10,10 @@ const { Title } = Typography;
 
 const Index = () => {
     const options = [
-        { label: 'รีเลย์ 1', value: '1' },
-        { label: 'รีเลย์ 2', value: '2' },
-        { label: 'รีเลย์ 3', value: '3' },
-        { label: 'รีเลย์ 4', value: '4' },
+        { label: 'panda', value: 'panda' },
+        { label: 'puppy', value: 'puppy' },
+        { label: 'kitten', value: 'kitten' },
+        { label: 'bunny', value: 'bunny' },
 
     ];
     const [data, setData] = React.useState({ boardId: boardId })

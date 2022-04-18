@@ -35,10 +35,10 @@ exports.createBoardProproties = async (boardId) => {
     .set({
       status: "manual",
       relays: {
-        relay1: "off",
-        relay2: "off",
-        relay3: "off",
-        relay4: "off",
+        panda: "off",
+        puppy: "off",
+        kitten: "off",
+        bunny: "off",
       },
     });
   db.collection("sensors").doc(boardId).set({
