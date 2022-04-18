@@ -5,10 +5,10 @@ import { Card } from "antd";
 import axios from "axios";
 import { BulbOutlined, BulbFilled } from "@ant-design/icons";
 import { dockerUrl, boardId } from "../../util/helper";
-
 const { Title } = Typography;
 const Relay = (props) => {
   const [toggle, setToggle] = useState(props.toggleDefault);
+
   function onChange(checked) {
     setToggle(checked);
   }
@@ -22,7 +22,7 @@ const Relay = (props) => {
                 {props.status === "auto" ? (
                   <Switch
                     defaultChecked={toggle}
-                    onChange={onChange}
+                    onChange={props.onSelect}
                     disabled
                   />
                 ) : (
@@ -55,6 +55,8 @@ const Relay = (props) => {
 const Index = () => {
   const [data, setData] = React.useState();
   const [status, setStatus] = React.useState("manual");
+  const [relays, setRelays] = React.useState({});
+
   const getRelaysStorage = React.useCallback(async () => {
     const res = await axios.get(`${dockerUrl}/relays?boardId=${boardId}`);
     setData(res.data);
@@ -66,14 +68,17 @@ const Index = () => {
   }, [getRelaysStorage]);
 
   React.useEffect(() => {
-    console.log(data);
-  }, [data]);
+    console.log(relays);
+  }, [relays]);
 
   const optionsWithDisabled = [
     { label: "Manual", value: "manual" },
     { label: "Auto", value: "auto" },
   ];
 
+  const onSelect = (e, item) => {
+    console.log(e, item);
+  };
   const onChangeStatus = (e) => {
     setStatus(e.target.value);
   };
@@ -106,7 +111,10 @@ const Index = () => {
                   item.charAt(0),
                   item.charAt(0).toUpperCase()
                 )}
-                toggleDefault={data["relays"][item]}
+                toggleDefault={data["relays"][item] === "on" ? true : false}
+                onSelect={(e) => {
+                  onSelect(item, e);
+                }}
               />
             );
           })}
