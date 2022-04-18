@@ -12,6 +12,7 @@ import {
   PieChartOutlined,
   SettingOutlined,
   DotChartOutlined,
+  CheckCircleOutlined
 } from '@ant-design/icons';
 
 
@@ -65,18 +66,14 @@ function App() {
               </Link></Menu.Item>
             </SubMenu>
 
-            <SubMenu key="sub3" icon={<SettingOutlined />} title="ตั้งค่า">
-              <Menu.Item key="10"> <Link to="/setting/system">
-                ตั้งค่าระบบ
+            <Menu.Item key="setting" icon={<SettingOutlined />}>
+              <Link to="/setting">
+                ตั้งค่า
               </Link>
-              </Menu.Item>
-              <Menu.Item key="9">
-                <Link to="/setting">
-                  ตั้งค่า Wifi
-                </Link>
-              </Menu.Item>
-            </SubMenu>
-            <Menu.Item key="11" icon={<PieChartOutlined />}>
+            </Menu.Item>
+
+
+            <Menu.Item key="11" icon={<CheckCircleOutlined />}>
               <Link to="/test">
                 ทดสอบระบบ
               </Link>
@@ -92,14 +89,13 @@ function App() {
                 <Route path="/relay" element={<Relay />} />
                 <Route path="/relay/time" element={<Time />} />
                 <Route path="/relay/temperature" element={<Temperature />} />
-                <Route path="/setting" element={<Setting />} />
-                <Route path="/setting/system" element={<SettingSystem />} />
 
-                <Route path="/relay/SetTemperature" element={<SetTemperature />} />
+                <Route path="/setting" element={<SettingSystem />} />
+
+
                 <Route path="/relay/SetTime" element={<SetTime />} />
 
                 <Route path="/test" element={<Test />} />
-
               </Routes>
             </div>
           </Content>
