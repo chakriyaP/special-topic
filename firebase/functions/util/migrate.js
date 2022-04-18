@@ -20,6 +20,11 @@ exports.migrating = async () => {
       console.log("No collections found in Firestore. Creating...");
       const now = new Date().getTime();
       await db.collection("time").doc("unix").set({ currTime: now });
+      db.collection("boards").doc("1.24.155.12").set({
+        name: "board1",
+        plantType: "plant1",
+        date: new Date().toISOString(),
+      });
     }
   }
 };
