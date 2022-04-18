@@ -3,6 +3,7 @@ version: "3.7"
 volumes:
  firebase-node_modules:
  firebase-lib:
+ react-node_modules:
  
 services:
   react:
@@ -12,7 +13,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ".:/app"
-      - "/app/node_modules"
+      - "react-node_modules:/app/node_modules"
     ports:
       - 3001:3000
     environment:
@@ -23,8 +24,8 @@ services:
    container_name: firebase
    ports:
      - 4000:4000
-     - 5000:5000
      - 5001:5001
+     - 5002:5002
      - 8080:8080
    volumes:
      - ./firebase:/firebase

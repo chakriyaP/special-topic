@@ -54,7 +54,10 @@ const executeChange = async (doc, now) => {
         }
       }
     } else if (scheduleData.type == "time") {
-      if (scheduleData.timeStart <= now <= scheduleData.timeEnd) {
+      const start = parseInt(scheduleData.startTime);
+      const end = parseInt(scheduleData.endTime);
+      const currTime = parseInt(now)
+      if (start <= currTime && currTime < end) {
         let selectedRelays = scheduleData.relays;
         selectedRelays.forEach((e) => {
           relays[e] = "on";
@@ -62,7 +65,6 @@ const executeChange = async (doc, now) => {
         relayRef.update({ relays });
         schedualRef.update({
           status: "executed",
-          remainingTime: scheduleData.execute_time,
         });
       } else {
         let selectedRelays = scheduleData.relays;
