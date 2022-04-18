@@ -19,7 +19,15 @@ const Relay = (props) => {
           <Card title={props.name} bordered={false} style={{ width: 250 }}>
             <Row justify="space-around" align="middle">
               <Col>
-                <Switch defaultChecked={toggle} onChange={onChange} />
+                {props.status === "auto" ? (
+                  <Switch
+                    defaultChecked={toggle}
+                    onChange={onChange}
+                    disabled
+                  />
+                ) : (
+                  <Switch defaultChecked={toggle} onChange={onChange} />
+                )}
               </Col>
             </Row>
             <Row justify="space-around" align="middle">
@@ -47,26 +55,28 @@ const Relay = (props) => {
 const Index = () => {
   const [data, setData] = React.useState();
   const [status, setStatus] = React.useState("manual");
-
   const getRelaysStorage = React.useCallback(async () => {
     const res = await axios.get(`${dockerUrl}/relays?boardId=${boardId}`);
     setData(res.data);
+    setStatus(res.data.status);
   }, []);
 
   React.useEffect(() => {
     getRelaysStorage();
   }, [getRelaysStorage]);
 
-
+  React.useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   const optionsWithDisabled = [
-    { label: 'Manual', value: 'manual' },
-    { label: 'Auto', value: 'auto' },
+    { label: "Manual", value: "manual" },
+    { label: "Auto", value: "auto" },
   ];
 
   const onChangeStatus = (e) => {
     setStatus(e.target.value);
-  }
+  };
 
   return (
     <div>
@@ -80,16 +90,25 @@ const Index = () => {
               value={status}
               optionType="button"
               buttonStyle="solid"
+              defaultValue={status}
             />
           </Row>
         </Col>
-
       </Row>
 
       <Row gutter={[16, 24]}>
         {data &&
           Object.keys(data["relays"]).map((item, key) => {
-            return <Relay name={item.replace(item.charAt(0), item.charAt(0).toUpperCase())} toggleDefault={data["relays"][key]} />;
+            return (
+              <Relay
+                status={status}
+                name={item.replace(
+                  item.charAt(0),
+                  item.charAt(0).toUpperCase()
+                )}
+                toggleDefault={data["relays"][item]}
+              />
+            );
           })}
       </Row>
     </div>
