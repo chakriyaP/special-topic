@@ -92,10 +92,8 @@ function App() {
 
                 <Route path="/setting" element={<SettingSystem />} />
 
-
                 <Route path="/relay/SetTime" element={<SetTime />} />
-                <Route path="/relay/SetTemperature" element={<SetTime />} />
-
+                <Route path="/relay/SetTemperature" element={<SetTemperature />} />
 
                 <Route path="/test" element={<Test />} />
               </Routes>

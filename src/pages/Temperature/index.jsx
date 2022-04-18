@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, Typography, Button, Row, Col, Modal } from "antd";
+import { Table, Typography, Button, Row, Col, Modal, Tag } from "antd";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { dockerUrl, boardId } from "../../util/helper"
@@ -24,6 +24,11 @@ const Index = (props) => {
     {
       title: "รีเลย์",
       dataIndex: "relays",
+      render: (_, record) => (
+        record.relays.map((relay) => {
+          return <Tag color="blue">{relay}</Tag>
+        })
+      ),
     },
     {
       title: 'ลบการตั้งค่า',
@@ -55,7 +60,6 @@ const Index = (props) => {
       timer: 1500
     })
     getTemperature()
-
   }
 
   return (
