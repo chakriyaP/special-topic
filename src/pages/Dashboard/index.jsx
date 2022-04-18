@@ -1,20 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Typography, Card, Col, Row } from 'antd';
 import {
     ExperimentOutlined,
     DotChartOutlined, CloudSyncOutlined, CoffeeOutlined
 } from '@ant-design/icons';
+import { dockerUrl, boardId } from "../../util/helper"
+import axios from "axios";
 
-const baseUrl = "https://asia-southeast1-kku-smart-farm.cloudfunctions.net/api"
-const boardId = "123"
 
 
-const { Title } = Typography;
 
 const Index = () => {
+    const { Title } = Typography;
+
+    React.useEffect(() => {
+        getAllTime()
+    }, [])
+
+    const [data, setDate] = React.useState({});
+
+    const getAllTime = async () => {
+        const res = await axios.get(`${dockerUrl}/sensors?boardId=${boardId}`)
+        setDate(res.data)
+
+    }
+
     return (
         <div>
-            <Title>แดชบอร์ด</Title>
+            <Typography.Title>แดชบอร์ด</Typography.Title>
             <Row gutter={[16, 24]}>
                 <Col span={24} >
                     <Card title="อุณหภูมิ" bordered={false}>
@@ -26,7 +39,7 @@ const Index = () => {
                                 <ExperimentOutlined style={{ fontSize: '60px', color: '#08c' }} />
                             </Col> */}
                             <Col span={16} >
-                                <Title level={2} >88 °C</Title>
+                                <Title level={2}>{data.temperature}°C</Title>
                             </Col>
 
                         </Row>
@@ -39,7 +52,7 @@ const Index = () => {
                                 <CoffeeOutlined style={{ fontSize: '80px', color: '#08c' }} />
                             </Col>
                             <Col span={16} >
-                                <Title level={2} >0 %</Title>
+                                <Title level={2} >{data.humidity} %</Title>
                                 {/* <ExperimentOutlined style={{ fontSize: '80px', color: '#08c' }} /> */}
                             </Col>
                         </Row>
@@ -52,7 +65,7 @@ const Index = () => {
                                 <DotChartOutlined style={{ fontSize: '80px', color: '#08c' }} />
                             </Col>
                             <Col span={16} >
-                                <Title level={2} >0 %</Title>
+                                <Title level={2} >{data.humidity} %</Title>
                                 {/* <ExperimentOutlined style={{ fontSize: '80px', color: '#08c' }} /> */}
                             </Col>
                         </Row>
@@ -66,7 +79,7 @@ const Index = () => {
                                 <CloudSyncOutlined style={{ fontSize: '80px', color: '#08c' }} />
                             </Col>
                             <Col span={16} >
-                                <Title level={2} >0 m/s</Title>
+                                <Title level={2} >{data.windSpeed} m/s</Title>
                                 {/* <ExperimentOutlined style={{ fontSize: '80px', color: '#08c' }} /> */}
                             </Col>
                         </Row>
