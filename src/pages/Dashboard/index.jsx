@@ -65,7 +65,7 @@ const Index = () => {
                                 <DotChartOutlined style={{ fontSize: '80px', color: '#08c' }} />
                             </Col>
                             <Col span={16} >
-                                <Title level={2} >{data.humidity} %</Title>
+                                <Title level={2} >{data.soilMoisture} %</Title>
                                 {/* <ExperimentOutlined style={{ fontSize: '80px', color: '#08c' }} /> */}
                             </Col>
                         </Row>

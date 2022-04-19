@@ -26,6 +26,7 @@ const executeChange = async (doc, now) => {
   const scheduleData = doc.data();
   const schedualRef = db.collection("schedules").doc(doc.id);
 
+  console.log({ scheduleData });
   const boardId = scheduleData.boardId;
   const relayRef = db.collection("relays").doc(boardId);
   const sensorsRef = db.collection("sensors").doc(boardId);
@@ -34,23 +35,26 @@ const executeChange = async (doc, now) => {
   const status = relaysDoc.status;
   const relays = relaysDoc.relays;
   const temperature = (await sensorsRef.get()).data().temperature;
+  console.log({ status, relays, temperature });
   if (status === "auto") {
     if (scheduleData.type == "temperature") {
       if (parseInt(temperature) < parseInt(scheduleData.temperature)) {
+        console.log("turn off temperature");
         let selectedRelays = scheduleData.relays;
         selectedRelays.forEach((e) => {
           relays[e] = "off";
         });
-        relayRef.update({ relays });
         schedualRef.update({ status: "pending" });
+        return await relayRef.update({ relays });
       } else {
         {
+          console.log("turn on temperature");
           let selectedRelays = scheduleData.relays;
           selectedRelays.forEach((e) => {
             relays[e] = "on";
           });
-          relayRef.update({ relays });
           schedualRef.update({ status: "executed" });
+          return await relayRef.update({ relays });
         }
       }
     } else if (scheduleData.type == "time") {
@@ -58,21 +62,23 @@ const executeChange = async (doc, now) => {
       const end = parseInt(scheduleData.endTime);
       const currTime = parseInt(now)
       if (start <= currTime && currTime < end) {
+        console.log("turn on time");
         let selectedRelays = scheduleData.relays;
         selectedRelays.forEach((e) => {
           relays[e] = "on";
         });
-        relayRef.update({ relays });
         schedualRef.update({
           status: "executed",
         });
+        return await relayRef.update({ relays });
       } else {
+        console.log("turn off time");
         let selectedRelays = scheduleData.relays;
         selectedRelays.forEach((e) => {
           relays[e] = "off";
         });
-        relayRef.update({ relays });
         schedualRef.update({ status: "pending" });
+        return await relayRef.update({ relays });
       }
     }
   }
@@ -85,8 +91,8 @@ exports.onTemperatureChange = functions
     const now = (await db.collection("time").doc("unix").get()).data().currTime;
     const schedualRef = db.collection("schedules");
     schedualRef.get().then(async (snapshot) => {
-      for (const doc of snapshot.docs) {
-        executeChange(doc, now);
+      for await (const doc of snapshot.docs) {
+        await executeChange(doc, now);
       }
     });
     return Promise.resolve();
@@ -99,8 +105,8 @@ exports.onTimeChange = functions
     const now = timeDoc.after.data().currTime;
     const schedualRef = db.collection("schedules");
     schedualRef.get().then(async (snapshot) => {
-      for (const doc of snapshot.docs) {
-        executeChange(doc, now);
+      for await (const doc of snapshot.docs) {
+        await executeChange(doc, now);
       }
     });
     return Promise.resolve();
